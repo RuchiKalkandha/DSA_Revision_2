@@ -286,6 +286,39 @@ public class LinkedList1 {
         return true;
     }
 
+    public boolean isCycle(){
+        Node slow = head;
+        Node fast = head;
+
+        while(fast!= null && fast.next !=null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast) return true; //cycle exists
+        }
+        return false; //cycle doesnot exist
+    }
+
+    public void deleting_a_cycle(){
+        // first we will detect if a cycle exists
+        Node slow = head;
+        Node fast = head;
+        Node prev = null;
+
+        while(fast!= null && fast.next!= null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if(slow == fast){
+                slow = head;
+                while(slow!=fast){
+                    slow = slow.next;
+                    prev = fast;
+                    fast = fast.next;
+                }
+            }
+        }
+        prev.next = null;
+    }
+
     public static void main(String[] args){
         // LinkedList1 ll1 = new LinkedList1();
         // ll1.addFirst(2);
