@@ -60,6 +60,7 @@ public class LinkedList1 {
 
     // printing a linked list 
 
+    
     public void printinfLinkedList(){
         if(head == null){
             System.out.println("Linked List is empty");
