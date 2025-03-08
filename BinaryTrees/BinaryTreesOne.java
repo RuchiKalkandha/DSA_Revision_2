@@ -1,4 +1,6 @@
 import java.util.*;
+
+import javax.swing.tree.TreeNode;
 public class BinaryTreesOne {
     static class Node{
         int data;
@@ -98,7 +100,65 @@ public class BinaryTreesOne {
         int right_sum = nodesSum(root.right);
         return left_sum + right_sum + root.data;
     }
+    // diameter
+
+/*
+class Node {
+    int data;
+    Node left;
+    Node right;
+    Node(int data) {
+        this.data = data;
+        left = null;
+        right = null;
     }
+}
+*/
+class info{
+    int height;
+    int diameter;
+    public info(int height, int diameter){
+        this.height = height;
+        this.diameter = diameter;
+    }
+}
+
+
+
+class Solution {
+    public  info helperfunction(Node root){
+    if(root == null) return new info(0,0);
+    info left_info = helperfunction(root.left);
+    info right_info = helperfunction(root.right);
+    int self_diameter = Math.max(Math.max(left_info.diameter, right_info.diameter),( left_info.height+right_info.height));
+    int self_height = Math.max(left_info.height,right_info.height)+1;
+    return new info(self_height, self_diameter);
+}
+    int diameter(Node root) {
+        // Your code here
+       info information = helperfunction(root);
+       return information.diameter;
+    }
+}
+// subtree
+    public boolean isIdentical(Node node, Node subRoot){
+        if(node == null && subRoot == null) return true;
+        if(node == null || subRoot == null || node.data != subRoot.data) return false;
+        if(!isIdentical(node.left,subRoot.left)) return false;
+        if(!isIdentical(node.right,subRoot.right)) return false;
+        return true;
+    }
+    public boolean isSubtree(Node root, Node subRoot) {
+        if(subRoot == null) return true;
+        if(root == null) return false;
+        if(root.data == subRoot.data){
+           if( isIdentical(root,subRoot)){
+            return true;
+           }
+        } 
+        return isSubtree(root.left,subRoot) || isSubtree(root.right,subRoot);
+    }
+}
     public static void main(String args[]){
         int nodes[] = {1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
         BinaryTree tree = new BinaryTree();
