@@ -167,6 +167,7 @@ class Solution {
             this.hd = hd;
         }
     }
+    // top-view of binary tree
     public void topView(Node root){
         // Level Order
         Queue<info2> q = new LinkedList<>();
@@ -199,6 +200,31 @@ class Solution {
             System.out.print(map.get(i).data + " ");
         }
         System.out.println();
+    }
+    // left-view of binary tree
+    ArrayList<Integer> leftView(Node root) {
+        ArrayList<Integer> res=new ArrayList<>();
+        Queue<Node> q=new LinkedList<>();
+        if(root==null){
+            return res;
+        }
+        q.add(root);
+        while(!q.isEmpty()){
+            int sizes=q.size();
+            for(int i=0;i<sizes;i++){
+                Node curr=q.poll();
+                if(i==0){
+                    res.add(curr.data);
+                }
+            if(curr.left!=null){
+                q.offer(curr.left);
+            }
+            if(curr.right!=null){
+                q.offer(curr.right);
+            }
+            }
+        }
+        return res;
     }
 }
     public static void main(String args[]){
