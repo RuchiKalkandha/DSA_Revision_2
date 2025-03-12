@@ -226,6 +226,16 @@ class Solution {
         }
         return res;
     }
+    // kth level of tree
+    public static void KLevel(Node root, int level,  int k){
+        if(root == null) return;
+        if(level == k){
+            System.out.print(root.data + " ");
+            return;
+        }
+        KLevel(root.left, level+1, k);
+        KLevel(root.right, level+1, k);
+    }
 }
     public static void main(String args[]){
         int nodes[] = {1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
@@ -247,5 +257,6 @@ class Solution {
         System.out.print(tree.nodesSum(root));
         System.out.println();
         tree.topView(root);
+        tree.KLevel(root,1,2);
     }
 }
