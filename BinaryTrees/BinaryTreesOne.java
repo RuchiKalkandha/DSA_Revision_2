@@ -236,6 +236,80 @@ class Solution {
         KLevel(root.left, level+1, k);
         KLevel(root.right, level+1, k);
     }
+    // path function // O(n) time
+    public static boolean getPath(Node root, int n, ArrayList<Node> path){
+        if(root == null) return false;
+        path.add(root);
+        if(root.data == n) return true;
+        boolean found_left = getPath(root.left, n, path);
+        boolean found_right = getPath(root.right, n, path);
+        if(found_left || found_right) return true;
+        path.remove(path.size()-1);
+        return false;
+    }
+    // lowest common ancestor approach 1 //O(n) time and space
+    public static Node lca(Node root, int n1, int n2){
+        ArrayList <Node> path1 = new ArrayList<>();
+        ArrayList <Node> path2 = new ArrayList<>();
+        getPath(root, n1 , path1);
+        getPath(root, n2, path2);
+        // lowest common ancestor
+        int i = 0;
+        for(;i<path1.size() && i<path2.size();i++){
+            if(path1.get(i) != path2.get(i)){
+                break;
+            }
+        }
+        // last equal node i-1th value
+        Node lca = path1.get(i-1);
+        return lca;
+    }
+    // Approach 2
+    public static Node lca2(Node root, int n1, int n2){
+        if(root == null || root.data == n1 || root.data == n2) return root;
+        Node leftLca = lca2(root.left, n1, n2);
+        Node rightLca = lca2(root.right, n1, n2);
+        if(leftLca == null) return rightLca;
+        if(rightLca == null) return leftLca;
+        return root;
+    }
+    // distance from lca to node;
+    public static int lcaDist(Node lca, int n){
+        if(lca == null) return -1;
+        if(lca.data == n) return 0;
+        int leftDist = lcaDist(lca.left, n);
+        int rightDist = lcaDist(lca.right, n);
+        if(leftDist == -1 && rightDist == -1) return -1;
+        else if(leftDist == -1) return rightDist +1;
+        else return leftDist + 1;
+    }
+    // minimum distance between two nodes
+    public static int minDist(Node root, int n1, int n2){
+        Node lca = lca2(root, n1, n2);
+        int dist1 = lcaDist(lca, n1);
+        int dist2 = lcaDist(lca, n2);
+        return dist1 + dist2;
+    }
+    // kth ancestor of a Node
+    static int ans = 0;
+    public static int KthAncestor(Node root, int n, int k){
+        
+        if(root == null) return -1;
+        if(root.data == n) return 0;
+        int leftDist = KthAncestor(root.left, n, k);
+        int rightDist = KthAncestor(root.right, n, k);
+
+        if(leftDist == -1 && rightDist == -1) return -1;
+        int max = Math.max(leftDist,rightDist);
+        if(max +1 == k) {
+            System.out.println(root.data);
+            ans = root.data;
+        }
+
+        // return max+1;
+        if(ans>0) return ans;
+        else return max+1;
+    }
 }
     public static void main(String args[]){
         int nodes[] = {1,2,4,-1,-1,5,-1,-1,3,-1,6,-1,-1};
@@ -258,5 +332,11 @@ class Solution {
         System.out.println();
         tree.topView(root);
         tree.KLevel(root,1,2);
+        System.out.println();
+        System.out.println(tree.lca(root,4,5).data);
+        System.out.println(tree.minDist(root,4,6));
+        System.out.println("Kth ancestor");
+        // tree.KthAncestor(root, 6, 2);
+        System.out.println(tree.KthAncestor(root, 5, 0));
     }
 }
